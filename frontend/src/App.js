@@ -21,5 +21,22 @@ function App() {
     </div>
   );
 }
+/*
+const response = await fetch("/auth", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ username: "john", password: "123" })
+});
 
+if (response.ok) {
+  const data = await response.json();
+  localStorage.setItem("access_token", data.access_token);
+  localStorage.setItem("username", data.username);
+  
+  // Переход на другую страницу
+  window.location.href = "/dashboard"; // или router.push("/dashboard") в React/Vue
+} else {
+  alert("Ошибка авторизации");
+}
+*/
 export default App;
