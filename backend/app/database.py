@@ -14,7 +14,7 @@ AsyncSessionLocal = sessionmaker(
     engine,
     class_ = AsyncSession,
     expire_on_commit = False,
-    autocommit = False
+    autocommit = False,
     autoflush=False
 )
 Base = declarative_base()

@@ -2,4 +2,6 @@ fastapi
 sqlalchemy
 pydantic
 pydantic_settings
-asincio
+alembic
+python-jose[cryptography]
+passlib[bcrypt]
