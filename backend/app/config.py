@@ -1,11 +1,10 @@
 from pydantic_settings import BaseSettings 
 
-#settings app 
 class Settings(BaseSettings):
-    app_name: str = "#"
-    debug: bool = True #vision error
-    database_url: str = "#" 
-    cors_origins: list =[
+    app_name: str = "SPB Hackation"
+    debug: bool = True
+    database_url: str = "sqlite+aiosqlite:///./app.db"
+    cors_origins: list = [
         "http://localhost:8000",
         "http://localhost:3000",
         "http://localhost:5173",
@@ -14,6 +13,9 @@ class Settings(BaseSettings):
     ]
     static_dir: str = "static"
     images_dir: str = "static/images"
+    secret_key: str = "your-secret-key-change-in-production"
+    algorithm: str = "HS256"
+    access_token_expire_minutes: int = 30
 
     class Config:
         env_file = ".env"

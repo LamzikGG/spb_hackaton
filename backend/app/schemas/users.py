@@ -1,14 +1,13 @@
 from pydantic import BaseModel
-from typing import Optional
-from datetime import datetime
 
 class UserBase(BaseModel):
     username: str
     password: str
 
-class UserRespones(BaseModel):
+class UserResponse(BaseModel):
     username: str
-    password: str
 
 class Token(BaseModel):
-    pass
+    access_token: str
+    token_type: str
+    username: str

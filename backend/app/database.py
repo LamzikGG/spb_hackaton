@@ -1,31 +1,29 @@
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from .config import settings
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.ext.asyncio import AsyncSession
+from config import settings
 
-engine = create_async_engine(
-    settings.database_url,
-    future=True
-    #echo = True # Логирование sql
-    #connect_args = {"check_same_thread"} для lite
+# Временное решение с синхронной SQLite
+engine = create_engine(
+    "sqlite:///./app.db",  # убрал aiosqlite
+    echo=True  # для отладки
 )
 
-AsyncSessionLocal = sessionmaker(
-    engine,
-    class_ = AsyncSession,
-    expire_on_commit = False,
-    autocommit = False,
-    autoflush=False
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
 )
+
 Base = declarative_base()
 
-async def get_db():
-    async with AsyncSessionLocal() as db:
-        try:
-            yield db
-        finally:
-            await db.close()
+# Синхронная версия get_db
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-async def init_db():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+def init_db():
+    Base.metadata.create_all(bind=engine)
