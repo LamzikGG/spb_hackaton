@@ -1,35 +1,26 @@
-// src/App.js
-import { Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Auth from './components/Auth/Auth';
+import Home from './pages/Home';
+import Main from './pages/Main';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Home from './pages/Home';
+import './App.css';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/" element={<Home />} />
-    </Routes>
+    <div className="App">
+      <Routes>
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/main" element={<Main />} />
+        <Route path="/articles" element={<Home />} />
+        <Route path="/" element={<Navigate to="/main" replace />} />
+        <Route path="*" element={<Navigate to="/main" replace />} />
+      </Routes>
+    </div>
   );
 }
 
 export default App;
-/*
-const response = await fetch("/auth", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ username: "john", password: "123" })
-});
-
-if (response.ok) {
-  const data = await response.json();
-  localStorage.setItem("access_token", data.access_token);
-  localStorage.setItem("username", data.username);
-  
-  // Переход на другую страницу
-  window.location.href = "/dashboard"; // или router.push("/dashboard") в React/Vue
-} else {
-  alert("Ошибка авторизации");
-}
-*/

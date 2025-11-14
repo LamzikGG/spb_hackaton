@@ -18,7 +18,7 @@ export default function Login() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:8000/login', {
+      const response = await fetch('http://localhost:8000/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -31,7 +31,8 @@ export default function Login() {
         const data = await response.json();
         // Сохраняем токен или флаг авторизации (например, в localStorage)
         localStorage.setItem('isAuthenticated', 'true');
-        navigate('/');
+        localStorage.setItem('access_token', data.access_token);
+        navigate('/main');
       } else {
         const err = await response.json();
         setError(err.detail || 'Неверный логин или пароль');
