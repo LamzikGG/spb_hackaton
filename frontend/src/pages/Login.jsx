@@ -1,51 +1,40 @@
-// src/pages/Register.jsx
+// src/pages/Login.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
-export default function Register() {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+export default function Login() {
+  const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (error) setError(''); // сброс ошибки при изменении
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Валидация на клиенте
-    if (formData.password !== formData.confirmPassword) {
-      setError('Пароли не совпадают');
-      return;
-    }
-
     try {
-      const response = await fetch('http://localhost:8000/register', {
+      const response = await fetch('http://localhost:8000/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: formData.username,
-          email: formData.email,
           password: formData.password
         })
       });
 
       if (response.ok) {
+        const data = await response.json();
+        // Сохраняем токен или флаг авторизации (например, в localStorage)
         localStorage.setItem('isAuthenticated', 'true');
         navigate('/');
       } else {
         const err = await response.json();
-        setError(err.detail || 'Ошибка регистрации');
+        setError(err.detail || 'Неверный логин или пароль');
       }
     } catch (err) {
       console.error(err);
@@ -55,7 +44,7 @@ export default function Register() {
 
   return (
     <div className="container">
-      <h1 className="page-title">Регистрация</h1>
+      <h1 className="page-title">Вход</h1>
 
       {error && <div className="error-message">{error}</div>}
 
@@ -80,18 +69,8 @@ export default function Register() {
           className="input-field"
         />
 
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Повторите пароль"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          required
-          className="input-field"
-        />
-
         <button type="submit" className="submit-button">
-          Подтвердить
+          Войти
         </button>
       </form>
     </div>

@@ -20,8 +20,7 @@ body {
   margin: 0 auto;
 }
 
-/* Заголовок */
-.register-title {
+.page-title {
   text-align: center;
   font-size: 24px;
   font-weight: 700;
@@ -29,7 +28,6 @@ body {
   color: #000;
 }
 
-/* Поле ввода */
 .input-field {
   width: 100%;
   padding: 14px 16px;
@@ -51,7 +49,6 @@ body {
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Кнопка */
 .submit-button {
   width: 100%;
   padding: 14px;
@@ -71,4 +68,11 @@ body {
 .submit-button:focus {
   background-color: #222;
   outline: none;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 14px;
+  margin-bottom: 12px;
+  text-align: center;
 }
