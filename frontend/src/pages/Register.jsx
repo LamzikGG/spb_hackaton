@@ -1,6 +1,6 @@
 // src/pages/Register.jsx
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import '../App.css';
 
 export default function Register() {
@@ -93,6 +93,10 @@ export default function Register() {
         <button type="submit" className="submit-button">
           Подтвердить
         </button>
+
+        <Link to='/' className = 'link'>
+          Войти
+        </Link>
       </form>
     </div>
   );

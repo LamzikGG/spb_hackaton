@@ -1,6 +1,6 @@
 // src/pages/Login.jsx
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import '../App.css';
 
 export default function Login() {
@@ -68,10 +68,13 @@ export default function Login() {
           required
           className="input-field"
         />
-
         <button type="submit" className="submit-button">
           Войти
         </button>
+
+        <Link to='/register' className = 'link'>
+          Регистрация
+        </Link>
       </form>
     </div>
   );

@@ -61,7 +61,6 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
-  margin-top: 16px;
   text-align: center;
 }
 
@@ -69,6 +68,13 @@ body {
 .submit-button:focus {
   background-color: #222;
   outline: none;
+}
+
+.link{
+  text-decoration: none;
+  color: black;
+  display: block;
+  margin-top: 16px;
 }
 
 .error-message {
