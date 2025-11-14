@@ -4,7 +4,6 @@ import Auth from './components/Auth/Auth';
 import MainWindow from './components/MainWindow/MainWindow';
 import EducationalGame from './components/EducationalGame/EducationalGame';
 import Home from './pages/Home';
-import Login from './pages/Login';
 import Register from './pages/Register';
 import './App.css';
 
@@ -13,7 +12,6 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/auth" element={<Auth />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/main" element={<MainWindow />} />
         <Route path="/game" element={<EducationalGame />} />
