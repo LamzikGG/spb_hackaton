@@ -1,35 +1,13 @@
-// src/App.js
-import { Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Home from './pages/Home';
+import React from 'react';
+import Auth from './components/Auth/Auth';
+import './App.css';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/" element={<Home />} />
-    </Routes>
+    <div className="App">
+      <Auth />
+    </div>
   );
 }
 
 export default App;
-/*
-const response = await fetch("/auth", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ username: "john", password: "123" })
-});
-
-if (response.ok) {
-  const data = await response.json();
-  localStorage.setItem("access_token", data.access_token);
-  localStorage.setItem("username", data.username);
-  
-  // Переход на другую страницу
-  window.location.href = "/dashboard"; // или router.push("/dashboard") в React/Vue
-} else {
-  alert("Ошибка авторизации");
-}
-*/

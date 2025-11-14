@@ -1,78 +1,33 @@
-/* src/App.css */
-
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  background-color: #fff;
-  color: #000;
-  line-height: 1.6;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #ffb347, #ffcc33, #87ceeb, #add8e6);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+  min-height: 100vh;
 }
 
-.container {
-  width: 100%;
-  padding: 20px 16px;
-  max-width: 480px;
-  margin: 0 auto;
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-.page-title {
-  text-align: center;
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 32px;
-  color: #000;
-}
-
-.input-field {
-  width: 100%;
-  padding: 14px 16px;
-  background-color: #E0E0E0;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  margin-bottom: 16px;
-  color: #333;
-}
-
-.input-field::placeholder {
-  color: #757575;
-  opacity: 1;
-}
-
-.input-field:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-}
-
-.submit-button {
-  width: 100%;
-  padding: 14px;
-  background-color: #000;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin-top: 16px;
-  text-align: center;
-}
-
-.submit-button:hover,
-.submit-button:focus {
-  background-color: #222;
-  outline: none;
-}
-
-.error-message {
-  color: #d32f2f;
-  font-size: 14px;
-  margin-bottom: 12px;
-  text-align: center;
+.App {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
