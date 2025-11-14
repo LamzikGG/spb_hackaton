@@ -1,4 +1,3 @@
-// src/App.js
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -8,33 +7,11 @@ function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-<<<<<<< HEAD
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<Home />} />
-=======
-      <Route path="/" element={<Register />} />
       <Route path="/home" element={<Home />} />
->>>>>>> frontend
     </Routes>
   );
 }
 
 export default App;
-/*
-const response = await fetch("/auth", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ username: "john", password: "123" })
-});
-
-if (response.ok) {
-  const data = await response.json();
-  localStorage.setItem("access_token", data.access_token);
-  localStorage.setItem("username", data.username);
-  
-  // Переход на другую страницу
-  window.location.href = "/dashboard"; // или router.push("/dashboard") в React/Vue
-} else {
-  alert("Ошибка авторизации");
-}
-*/

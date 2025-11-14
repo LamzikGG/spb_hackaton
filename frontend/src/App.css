@@ -7,11 +7,7 @@
 }
 
 body {
-<<<<<<< HEAD
-  font-family: 'Segoe UI', Roboto, sans-serif;
-=======
   font-family: 'Manrope', sans-serif;
->>>>>>> frontend
   background-color: #fff;
   color: #000;
   line-height: 1.6;
@@ -22,10 +18,7 @@ body {
   padding: 20px 16px;
   max-width: 480px;
   margin: 0 auto;
-<<<<<<< HEAD
-=======
   padding-top: 10vh;
->>>>>>> frontend
 }
 
 .page-title {
@@ -83,11 +76,7 @@ body {
   font-size: 14px;
   margin-bottom: 12px;
   text-align: center;
-<<<<<<< HEAD
-=======
 }
-
-/* ... остальные стили выше ... */
 
 /* Главная страница */
 .home-container {
@@ -125,97 +114,6 @@ body {
   font-size: 48px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 2;
-}
-
-/* Кнопки вокруг маскота */
-.feature-buttons {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.feature-button {
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  background-color: #E0E0E0;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: none;
-  outline: none;
-}
-
-.feature-button:hover {
-  background-color: #d0d0d0;
-  transform: scale(1.1) rotate(var(--rotation)) translateY(-80px) rotate(calc(-1 * var(--rotation)));
-}
-
-.feature-button span {
-  display: block;
-  text-align: center;
-}
-
-.feature-label {
-  font-size: 12px;
-  margin-top: 4px;
-  font-weight: 600;
-  color: #333;
-}
-
-/* Модальное окно */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  text-align: center;
-  max-width: 300px;
-}
-
-.modal-content button {
-  margin-top: 16px;
-  padding: 8px 16px;
-  background: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/* Анимация маскота при наведении */
-.mascot-center {
-  width: 100px;
-  height: 100px;
-  background-color: #f0f0f0;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 48px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 2;
   transition: transform 0.3s ease;
 }
 
@@ -230,7 +128,16 @@ body {
   100% { transform: scale(1.1) translateY(-5px); }
 }
 
-/* Кнопки — плавное изменение расстояния */
+/* Кнопки вокруг маскота */
+.feature-buttons {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .feature-button {
   position: absolute;
   width: 70px;
@@ -296,5 +203,4 @@ body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
->>>>>>> frontend
 }

@@ -1,16 +1,4 @@
 // src/pages/Home.jsx
-<<<<<<< HEAD
-import '../App.css';
-
-export default function Home() {
-  return (
-    <div className="container">
-      <div className="home-container">
-        <h1>Добро пожаловать!</h1>
-        <p>Вы успешно зарегистрировались и попали на главную страницу.</p>
-        {/* Здесь позже будет ваш маскот и чат */}
-      </div>
-=======
 import { useState } from 'react';
 import '../App.css';
 
@@ -71,7 +59,6 @@ export default function Home() {
           </div>
         </div>
       )}
->>>>>>> frontend
     </div>
   );
 }
