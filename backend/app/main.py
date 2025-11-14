@@ -1,33 +1,32 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from routes.auth import router as auth_router
+from app.routes import auth, users
+from app.config import settings
+import uvicorn
 
 app = FastAPI(
-    title="SPB Hackation Backend",
-    debug=True
+    title="SPB Hackaton Backend",
+    description="Backend API with JSON storage authentication",
+    version="1.0.0"
 )
 
-# CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:3000",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Include routers
+app.include_router(auth.router)
+app.include_router(users.router)
 
-# Подключаем роутеры
-app.include_router(auth_router, prefix="/api")
-
-@app.get("/")
+@app.get("/auth")
 async def root():
-    return {"message": "SPB Hackation Backend is running!"}
+    return {"message": "SPB Hackaton Backend API"}
 
 @app.get("/health")
-async def health():
-    return {"status": "ok"}
+async def health_check():
+    return {"status": "healthy"}
+
+@app.post("/message_user")
+async def message_send():
+    return
+@app.get("/message_get")
+async def message_get():
+    return
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)

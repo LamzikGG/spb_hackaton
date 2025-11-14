@@ -1,23 +1,12 @@
-from pydantic_settings import BaseSettings 
+import os
+from dotenv import load_dotenv
 
-class Settings(BaseSettings):
-    app_name: str = "SPB Hackation"
-    debug: bool = True
-    database_url: str = "sqlite+aiosqlite:///./app.db"
-    cors_origins: list = [
-        "http://localhost:8000",
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:3000",
-    ]
-    static_dir: str = "static"
-    images_dir: str = "static/images"
-    secret_key: str = "your-secret-key-change-in-production"
-    algorithm: str = "HS256"
-    access_token_expire_minutes: int = 30
+load_dotenv()
 
-    class Config:
-        env_file = ".env"
+class Settings:
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "your-secret-key-here-change-in-production")
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    JSON_STORAGE_PATH: str = "users.json"
 
 settings = Settings()
