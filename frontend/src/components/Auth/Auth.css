@@ -273,3 +273,21 @@
 .video-container {
   animation: videoFadeIn 0.5s ease-out;
 }
+
+/* Добавляем в конец Auth.css */
+.skip-button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffb347, #87ceeb);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.skip-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 179, 71, 0.4);
+}

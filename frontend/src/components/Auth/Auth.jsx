@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './Auth.css';
 
-const Auth = () => {
+const Auth = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     username: '',
@@ -24,16 +24,18 @@ const Auth = () => {
     
     if (!isLogin) {
       // Регистрация - показываем видео
+      console.log('Registration successful, showing welcome video');
       setIsRegistered(true);
       setShowWelcomeVideo(true);
     } else {
       // Логин - обычная авторизация
-      console.log('Login successful');
-      // Здесь логика логина
+      console.log('Login successful, calling onLogin');
+      onLogin(); // Вызываем функцию для перехода на MainWindow
     }
   };
 
   const handleVideoEnd = () => {
+    console.log('Video ended, switching to login form');
     setShowWelcomeVideo(false);
     // После видео переключаем на логин
     setIsLogin(true);
@@ -41,8 +43,15 @@ const Auth = () => {
   };
 
   const handleCloseVideo = () => {
+    console.log('Video closed, switching to login form');
     setShowWelcomeVideo(false);
     videoRef.current?.pause();
+  };
+
+  const handleSkipToMain = () => {
+    console.log('Skipping to MainWindow after registration');
+    setShowWelcomeVideo(false);
+    onLogin(); // Переходим сразу в MainWindow после регистрации
   };
 
   if (showWelcomeVideo) {
@@ -65,6 +74,9 @@ const Auth = () => {
           <div className="video-text">
             <h2>Добро пожаловать, {formData.username}!</h2>
             <p>Ваша регистрация завершена успешно</p>
+            <button className="skip-button" onClick={handleSkipToMain}>
+              Перейти в приложение
+            </button>
           </div>
         </div>
       </div>
