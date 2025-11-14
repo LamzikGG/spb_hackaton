@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MainWindow.css';
 
@@ -8,32 +8,64 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
   const userName = propUserName || localStorage.getItem('username') || 'Пользователь';
   const [chatMessage, setChatMessage] = useState('');
   const [messages, setMessages] = useState([
-    { type: 'bot', text: 'Привет! Я нейросеть-помощник. Чем могу помочь?' }
+    { type: 'bot', text: 'Привет! Я нейросеть-помощник на базе Mistral. Чем могу помочь?' }
   ]);
   const [userRating, setUserRating] = useState(150);
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
 
-  const handleSendMessage = (e) => {
+  // Автоматическая прокрутка к новым сообщениям
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isLoading]);
+
+  const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!chatMessage.trim()) return;
+    if (!chatMessage.trim() || isLoading) return;
 
-    // Добавляем сообщение пользователя
-    const userMsg = { type: 'user', text: chatMessage };
-    setMessages(prev => [...prev, userMsg]);
+    const userMessage = chatMessage.trim();
     
-    // Имитируем ответ нейросети
-    setTimeout(() => {
-      const botResponses = [
-        "Интересный вопрос! Давайте подумаем вместе...",
-        "Отличное наблюдение! Вот что я могу посоветовать...",
-        "По моим данным, это связано с...",
-        "Рекомендую изучить этот вопрос подробнее в учебных материалах",
-        "Ваш прогресс впечатляет! Продолжайте в том же духе!"
-      ];
-      const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
-      setMessages(prev => [...prev, { type: 'bot', text: randomResponse }]);
-    }, 1000);
-
+    // Добавляем сообщение пользователя
+    const userMsg = { type: 'user', text: userMessage };
+    setMessages(prev => [...prev, userMsg]);
     setChatMessage('');
+    setIsLoading(true);
+
+    try {
+      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_BASE_URL}/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          model: 'mistral'
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ detail: 'Ошибка сервера' }));
+        throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const botResponse = data.response || 'Извините, не удалось получить ответ.';
+      
+      setMessages(prev => [...prev, { type: 'bot', text: botResponse }]);
+    } catch (error) {
+      console.error('Ошибка при отправке сообщения:', error);
+      const errorMessage = error.message.includes('Failed to fetch') || error.message.includes('ERR_EMPTY_RESPONSE')
+        ? 'Не удалось подключиться к серверу. Убедитесь, что бэкенд запущен.'
+        : error.message || 'Произошла ошибка при обработке запроса.';
+      
+      setMessages(prev => [...prev, { 
+        type: 'bot', 
+        text: `Извините, произошла ошибка: ${errorMessage}` 
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleLogout = () => {
@@ -163,6 +195,19 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
                   </div>
                 </div>
               ))}
+              {isLoading && (
+                <div className="message bot-message">
+                  <div className="message-avatar">🤖</div>
+                  <div className="message-content">
+                    <div className="message-text typing-indicator">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
             </div>
 
             <form className="chat-input-form" onSubmit={handleSendMessage}>
@@ -171,11 +216,12 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
                   type="text"
                   value={chatMessage}
                   onChange={(e) => setChatMessage(e.target.value)}
-                  placeholder="Задайте вопрос нейросети..."
+                  placeholder={isLoading ? "Нейросеть думает..." : "Задайте вопрос нейросети..."}
                   className="message-input"
+                  disabled={isLoading}
                 />
-                <button type="submit" className="send-button">
-                  📤
+                <button type="submit" className="send-button" disabled={isLoading}>
+                  {isLoading ? '⏳' : '📤'}
                 </button>
               </div>
             </form>
