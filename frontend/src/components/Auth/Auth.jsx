@@ -40,6 +40,7 @@ const Auth = () => {
           setIsRegistered(true);
           setShowWelcomeVideo(true);
           localStorage.setItem('isAuthenticated', 'true');
+          localStorage.setItem('username', formData.username);
         } else {
           const err = await response.json();
           alert(err.detail || 'Ошибка регистрации');
@@ -64,6 +65,7 @@ const Auth = () => {
           const data = await response.json();
           localStorage.setItem('isAuthenticated', 'true');
           localStorage.setItem('access_token', data.access_token);
+          localStorage.setItem('username', formData.username);
           navigate('/main');
         } else {
           const err = await response.json();

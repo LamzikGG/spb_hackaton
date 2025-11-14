@@ -32,6 +32,7 @@ export default function Login() {
         // Сохраняем токен или флаг авторизации (например, в localStorage)
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('username', formData.username);
         navigate('/main');
       } else {
         const err = await response.json();

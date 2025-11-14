@@ -33,6 +33,7 @@ export default function Register() {
 
       if (response.ok) {
         localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('username', formData.username);
         navigate('/main');
       } else {
         const err = await response.json();
