@@ -3,9 +3,12 @@ import '../App.css';
 
 export default function Home() {
   return (
-    <div className="home-container">
-      <h1>Добро пожаловать!</h1>
-      <p>Вы успешно зарегистрировались и попали на главную страницу.</p>
+    <div className="container">
+      <div className="home-container">
+        <h1>Добро пожаловать!</h1>
+        <p>Вы успешно зарегистрировались и попали на главную страницу.</p>
+        {/* Здесь позже будет ваш маскот и чат */}
+      </div>
     </div>
   );
 }

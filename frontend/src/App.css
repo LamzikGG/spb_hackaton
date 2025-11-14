@@ -1,82 +1,74 @@
 /* src/App.css */
 
-/* Общие стили */
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f9f9f9;
+  padding: 0;
 }
 
-/* Страница регистрации */
-.register-container {
-  padding: 2rem;
-  max-width: 400px;
-  margin: 2rem auto;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+body {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background-color: #fff;
+  color: #000;
+  line-height: 1.6;
 }
 
-.register-container h2 {
+.container {
+  width: 100%;
+  padding: 20px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Заголовок */
+.register-title {
   text-align: center;
-  margin-bottom: 1.5rem;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: #000;
+}
+
+/* Поле ввода */
+.input-field {
+  width: 100%;
+  padding: 14px 16px;
+  background-color: #E0E0E0;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  margin-bottom: 16px;
   color: #333;
 }
 
-.form-group {
-  margin-bottom: 1rem;
+.input-field::placeholder {
+  color: #757575;
+  opacity: 1;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 0.4rem;
-  font-weight: 600;
-  color: #444;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
-.form-group input:focus {
+.input-field:focus {
   outline: none;
-  border-color: #4CAF50;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
-.register-button {
+/* Кнопка */
+.submit-button {
   width: 100%;
-  padding: 0.6rem;
-  background-color: #4CAF50;
+  padding: 14px;
+  background-color: #000;
   color: white;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 12px;
+  font-size: 18px;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
-}
-
-.register-button:hover {
-  background-color: #45a049;
-}
-
-/* Главная страница */
-.home-container {
-  padding: 2rem;
+  margin-top: 16px;
   text-align: center;
 }
 
-.home-container h1 {
-  color: #2c3e50;
-  margin-bottom: 1rem;
-}
-
-.home-container p {
-  color: #555;
-  font-size: 1.1rem;
+.submit-button:hover,
+.submit-button:focus {
+  background-color: #222;
+  outline: none;
 }
