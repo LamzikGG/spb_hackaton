@@ -1,16 +1,16 @@
 // src/pages/Register.jsx
 import { useState } from 'react';
-import { useNavigate,Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import '../App.css';
 
 export default function Register() {
   const [formData, setFormData] = useState({
     username: '',
-    email: '',
     password: '',
     confirmPassword: ''
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -22,34 +22,58 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     // Валидация на клиенте
     if (formData.password !== formData.confirmPassword) {
       setError('Пароли не совпадают');
+      setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:8000/register', {
+      const response = await fetch('http://127.0.0.1:8000/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           username: formData.username,
-          email: formData.email,
           password: formData.password
         })
       });
 
       if (response.ok) {
-        localStorage.setItem('isAuthenticated', 'true');
-        navigate('/');
+        // После успешной регистрации автоматически логинимся
+        const loginResponse = await fetch('http://127.0.0.1:8000/auth/login', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: formData.username,
+            password: formData.password
+          })
+        });
+
+        if (loginResponse.ok) {
+          const loginData = await loginResponse.json();
+          localStorage.setItem('access_token', loginData.access_token);
+          localStorage.setItem('username', formData.username);
+          navigate('/home');
+        } else {
+          // Если логин не удался, все равно переходим на страницу логина
+          navigate('/');
+        }
       } else {
         const err = await response.json();
         setError(err.detail || 'Ошибка регистрации');
       }
     } catch (err) {
-      console.error(err);
+      console.error('Registration error:', err);
       setError('Не удалось подключиться к серверу');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,6 +91,7 @@ export default function Register() {
           value={formData.username}
           onChange={handleChange}
           required
+          minLength="3"
           className="input-field"
         />
 
@@ -77,6 +102,7 @@ export default function Register() {
           value={formData.password}
           onChange={handleChange}
           required
+          minLength="3"
           className="input-field"
         />
 
@@ -87,14 +113,19 @@ export default function Register() {
           value={formData.confirmPassword}
           onChange={handleChange}
           required
+          minLength="3"
           className="input-field"
         />
 
-        <button type="submit" className="submit-button">
-          Подтвердить
+        <button 
+          type="submit" 
+          className="submit-button"
+          disabled={loading}
+        >
+          {loading ? 'Регистрация...' : 'Подтвердить'}
         </button>
 
-        <Link to='/' className = 'link'>
+        <Link to='/' className='link'>
           Войти
         </Link>
       </form>
