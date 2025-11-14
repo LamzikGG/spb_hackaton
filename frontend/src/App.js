@@ -9,7 +9,8 @@ function App() {
   const [userName, setUserName] = useState('');
 
   const handleLogin = (username) => {
-    setUserName(username);
+    console.log('Login/Registration successful for user:', username);
+    setUserName(username || 'User');
     setCurrentView('main');
   };
 
