@@ -3,13 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import httpx
 import os
-from sqlalchemy.ext.asyncio import AsyncSession
 
 # Импорты из вашей структуры
 from app.config import settings
-from app.database import get_db, init_db
 # Предполагаем, что у вас есть роутеры в app/routes
-from app.routes import auth  # если есть auth.py в routes
+from app.routes import auth, profile
 
 app = FastAPI(
     title="Moscow Chat API",
@@ -26,11 +24,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Если есть роутеры - подключаем их
+# Подключаем роутеры
 try:
     app.include_router(auth.router, prefix="/api/v1")
 except Exception as e:
     print(f"Note: Auth router not available: {e}")
+
+try:
+    app.include_router(profile.router)
+except Exception as e:
+    print(f"Note: Profile router not available: {e}")
 
 class ChatRequest(BaseModel):
     message: str
@@ -53,11 +56,7 @@ OLLAMA_URL = f"http://{OLLAMA_HOST}:{OLLAMA_PORT}"
 
 @app.on_event("startup")
 async def startup_event():
-    try:
-        await init_db()
-        print("Database initialized")
-    except Exception as e:
-        print(f"Database initialization warning: {e}")
+    print("FastAPI application started")
 
 @app.get("/")
 async def root():
