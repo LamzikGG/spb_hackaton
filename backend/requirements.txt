@@ -1,11 +1,10 @@
 fastapi
-sqlalchemy
+uvicorn
+httpx
 pydantic
-pydantic_settings
+sqlalchemy
 alembic
 python-jose[cryptography]
 passlib[bcrypt]
-uvicorn
-python-jose
-python-multipart
-python-dotenv
+pydantic-settings
+aiosqlite
