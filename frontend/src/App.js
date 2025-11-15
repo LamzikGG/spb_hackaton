@@ -5,6 +5,7 @@ import MainWindow from './components/MainWindow/MainWindow';
 import EducationalGame from './components/EducationalGame/EducationalGame';
 import Home from './pages/Home';
 import Register from './pages/Register';
+import Profile from './pages/Profile';
 import './App.css';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/main" element={<MainWindow />} />
         <Route path="/game" element={<EducationalGame />} />
         <Route path="/articles" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/" element={<Navigate to="/main" replace />} />
         <Route path="*" element={<Navigate to="/main" replace />} />
       </Routes>

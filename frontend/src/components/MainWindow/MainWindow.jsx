@@ -92,6 +92,7 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
   const quickActions = [
     { label: 'Учебные игры', action: handleStartGame },
     { label: 'База знаний', action: () => navigate('/articles') },
+    { label: 'Мой профиль', action: () => navigate('/profile') },
   ];
 
   return (

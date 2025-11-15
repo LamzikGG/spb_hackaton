@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 import httpx
 import os
@@ -8,6 +8,8 @@ import re
 router = APIRouter(prefix="/api/v1/profile", tags=["profile"])
 
 from app.config import settings
+from app.auth.auth_bearer import JWTBearer
+from app.services.json_storage import storage
 
 # Log configuration for debugging
 import logging
@@ -27,6 +29,16 @@ class ProfileRequest(BaseModel):
 class ArticleResponse(BaseModel):
     article: str
     topics: list[dict]
+
+
+class ProfileData(BaseModel):
+    name: str
+    age: int
+    profession: str
+    interests: list[str]
+    education: str = ""
+    location: str = ""
+    bio: str = ""
 
 
 def extract_links_from_text(text: str) -> list[dict]:
@@ -253,3 +265,20 @@ async def analyze_profile(profile: ProfileRequest):
             status_code=500,
             detail=f"Internal server error: {str(e)}"
         )
+
+
+@router.get("/me")
+async def get_user_profile(username: str = Depends(JWTBearer())):
+    """Get current user's profile"""
+    profile = storage.get_user_profile(username)
+    if profile is None:
+        return {"profile": None}
+    return {"profile": profile}
+
+
+@router.post("/me")
+async def save_user_profile(profile: ProfileData, username: str = Depends(JWTBearer())):
+    """Save current user's profile"""
+    profile_dict = profile.dict()
+    storage.save_user_profile(username, profile_dict)
+    return {"message": "Profile saved successfully", "profile": profile_dict}

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './ProfileForm.css';
 
-export default function ProfileForm({ onSubmit, isLoading }) {
+export default function ProfileForm({ onSubmit, isLoading, initialData }) {
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -11,6 +11,22 @@ export default function ProfileForm({ onSubmit, isLoading }) {
     location: '',
     bio: ''
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name || '',
+        age: initialData.age || '',
+        profession: initialData.profession || '',
+        interests: Array.isArray(initialData.interests) 
+          ? initialData.interests.join(', ') 
+          : initialData.interests || '',
+        education: initialData.education || '',
+        location: initialData.location || '',
+        bio: initialData.bio || ''
+      });
+    }
+  }, [initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

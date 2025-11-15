@@ -10,7 +10,18 @@
       "id": "50d86416-2b07-4a7b-a2e3-c236e64428a7",
       "username": "Duck",
       "hashed_password": "cc232d9872ccf0c4dbf1f15bf09644c44e12e9a0931a7e178ffb62569ec0fa8dd973643a02b882374793173a56e69fbe",
-      "disabled": false
+      "disabled": false,
+      "profile": {
+        "name": "Vlad",
+        "age": 20,
+        "profession": "Frontend",
+        "interests": [
+          "Frontend"
+        ],
+        "education": "School",
+        "location": "Kazan",
+        "bio": ""
+      }
     }
   }
 }
