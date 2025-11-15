@@ -9,7 +9,16 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <div 
+      className="App"
+      style={{
+        backgroundImage: 'url(/background/back.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        minHeight: '100vh'
+      }}
+    >
       <Routes>
         <Route path="/auth" element={<Auth />} />
         <Route path="/register" element={<Register />} />
