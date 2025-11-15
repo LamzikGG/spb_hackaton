@@ -8,7 +8,7 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
   const userName = propUserName || localStorage.getItem('username') || 'Пользователь';
   const [chatMessage, setChatMessage] = useState('');
   const [messages, setMessages] = useState([
-    { type: 'bot', text: 'Привет! Я нейросеть-помощник на базе Mistral. Чем могу помочь?' }
+    { type: 'bot', text: 'Привет! Я нейросеть-помощник на базе Mistral AI. Чем могу помочь?' }
   ]);
   const [userRating, setUserRating] = useState(150);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +40,7 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
         },
         body: JSON.stringify({
           message: userMessage,
-          model: 'mistral'
+          model: 'mistral-small'
         })
       });
 

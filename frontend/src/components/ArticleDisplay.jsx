@@ -10,40 +10,74 @@ export default function ArticleDisplay({ article, topics, onReset }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Convert markdown links to clickable links
+  // Convert markdown links to clickable links and format paragraphs
   const formatArticle = (text) => {
-    // Replace markdown links [text](url) with HTML links
-    const linkRegex = /\[([^\]]+)\]\(([^\)]+)\)/g;
-    const parts = [];
-    let lastIndex = 0;
-    let match;
-
-    while ((match = linkRegex.exec(text)) !== null) {
-      // Add text before the link
-      if (match.index > lastIndex) {
-        parts.push({
-          type: 'text',
-          content: text.substring(lastIndex, match.index)
-        });
+    // First, split by double line breaks to get paragraphs
+    let paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+    
+    // If no paragraphs found (no double line breaks), try single line breaks
+    if (paragraphs.length === 1 && text.includes('\n')) {
+      paragraphs = text.split(/\n/).filter(p => p.trim().length > 0);
+    }
+    
+    // If still only one paragraph, try to split by sentence patterns for better formatting
+    if (paragraphs.length === 1) {
+      const longParagraph = paragraphs[0];
+      // Split by sentence endings followed by space and capital letter (rough paragraph detection)
+      const sentenceSplit = longParagraph.match(/[^.!?]+[.!?]+(?:\s+[A-ZА-Я])?/g);
+      if (sentenceSplit && sentenceSplit.length > 6) {
+        // Group sentences into paragraphs of 3-4 sentences
+        const sentencesPerPara = 3;
+        paragraphs = [];
+        for (let i = 0; i < sentenceSplit.length; i += sentencesPerPara) {
+          paragraphs.push(sentenceSplit.slice(i, i + sentencesPerPara).join(' ').trim());
+        }
       }
-      // Add the link
-      parts.push({
-        type: 'link',
-        text: match[1],
-        url: match[2]
-      });
-      lastIndex = match.index + match[0].length;
     }
+    
+    return paragraphs.map((paragraph, paraIndex) => {
+      const linkRegex = /\[([^\]]+)\]\(([^\)]+)\)/g;
+      const parts = [];
+      let lastIndex = 0;
+      let match;
 
-    // Add remaining text
-    if (lastIndex < text.length) {
-      parts.push({
-        type: 'text',
-        content: text.substring(lastIndex)
-      });
-    }
+      while ((match = linkRegex.exec(paragraph)) !== null) {
+        // Add text before the link
+        if (match.index > lastIndex) {
+          const textBefore = paragraph.substring(lastIndex, match.index).trim();
+          if (textBefore) {
+            parts.push({
+              type: 'text',
+              content: textBefore + ' '
+            });
+          }
+        }
+        // Add the link
+        parts.push({
+          type: 'link',
+          text: match[1],
+          url: match[2]
+        });
+        lastIndex = match.index + match[0].length;
+      }
 
-    return parts.length > 0 ? parts : [{ type: 'text', content: text }];
+      // Add remaining text
+      if (lastIndex < paragraph.length) {
+        const textAfter = paragraph.substring(lastIndex).trim();
+        if (textAfter) {
+          parts.push({
+            type: 'text',
+            content: ' ' + textAfter
+          });
+        }
+      }
+
+      return {
+        type: 'paragraph',
+        index: paraIndex,
+        parts: parts.length > 0 ? parts : [{ type: 'text', content: paragraph.trim() }]
+      };
+    });
   };
 
   const formattedContent = formatArticle(article);
@@ -51,47 +85,51 @@ export default function ArticleDisplay({ article, topics, onReset }) {
   return (
     <div className="article-display-container">
       <div className="article-header">
-        <h2>Your Personalized Article</h2>
+        <h2>Ваша персонализированная статья</h2>
         <div className="article-actions">
           <button 
             onClick={handleCopy} 
             className="copy-button"
-            title="Copy article"
+            title="Копировать статью"
           >
-            {copied ? '✓ Copied!' : '📋 Copy'}
+            {copied ? '✓ Скопировано!' : '📋 Копировать'}
           </button>
           <button 
             onClick={onReset} 
             className="reset-button"
-            title="Create new article"
+            title="Создать новую статью"
           >
-            ✨ New Article
+            ✨ Новая статья
           </button>
         </div>
       </div>
 
       <div className="article-content">
-        {formattedContent.map((part, index) => {
-          if (part.type === 'link') {
-            return (
-              <a
-                key={index}
-                href={part.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="article-link"
-              >
-                {part.text}
-              </a>
-            );
-          }
-          return <span key={index}>{part.content}</span>;
-        })}
+        {formattedContent.map((paragraph, paraIndex) => (
+          <p key={paraIndex} className="article-paragraph">
+            {paragraph.parts.map((part, partIndex) => {
+              if (part.type === 'link') {
+                return (
+                  <a
+                    key={partIndex}
+                    href={part.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="article-link"
+                  >
+                    {part.text}
+                  </a>
+                );
+              }
+              return <span key={partIndex}>{part.content}</span>;
+            })}
+          </p>
+        ))}
       </div>
 
       {topics && topics.length > 0 && (
         <div className="topics-section">
-          <h3>Topics of Interest</h3>
+          <h3>Интересные темы</h3>
           <div className="topics-grid">
             {topics.map((topic, index) => (
               <a

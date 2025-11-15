@@ -128,7 +128,7 @@ const Auth = () => {
             <input
               type="text"
               name="username"
-              placeholder="Username"
+              placeholder="Имя пользователя"
               value={formData.username}
               onChange={handleChange}
               required
@@ -139,7 +139,7 @@ const Auth = () => {
             <input
               type="password"
               name="password"
-              placeholder="Password"
+              placeholder="Пароль"
               value={formData.password}
               onChange={handleChange}
               required
