@@ -403,11 +403,6 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
                 <span className="name">John</span>
                 <span className="score">128</span>
               </div>
-              <div className="leaderboard-item">
-                <span className="rank">5</span>
-                <span className="name">Anna</span>
-                <span className="score">115</span>
-              </div>
             </div>
           </div>
         </div>

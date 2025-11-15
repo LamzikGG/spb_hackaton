@@ -4,14 +4,6 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #ffb347, #ffcc33, #87ceeb, #add8e6);
-  background-size: 400% 400%;
-  animation: gradientShift 8s ease infinite;
-  min-height: 100vh;
-}
-
 @keyframes gradientShift {
   0% {
     background-position: 0% 50%;
