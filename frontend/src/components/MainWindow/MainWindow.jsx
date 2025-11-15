@@ -16,6 +16,34 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
   const [userRating, setUserRating] = useState(150);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  
+  // Доступные маскоты (12 вариантов)
+  const mascots = [
+    { src: '/moscot/first/1.png', name: 'Счастливый', status: 'Маскот готов помочь! Привет!' },
+    { src: '/moscot/first/2.png', name: 'Удивленный', status: 'Вау! Это потрясающе!' },
+    { src: '/moscot/first/3.png', name: 'Радостный', status: 'Отлично! Продолжайте в том же духе!' },
+    { src: '/moscot/first/4.png', name: 'Злой', status: 'Хм, нужно подумать...' },
+    { src: '/moscot/first/5.png', name: 'Смеющийся', status: 'Ха-ха! Это весело!' },
+    { src: '/moscot/first/6.png', name: 'Дружелюбный', status: 'Привет! Давайте дружить!' },
+    { src: '/moscot/second/1.png', name: 'Игривый', status: 'Давайте играть и учиться!' },
+    { src: '/moscot/second/2.png', name: 'Любящий', status: 'Я вас люблю! Вы лучшие!' },
+    { src: '/moscot/second/3.png', name: 'Грустный', status: 'Ой, не расстраивайтесь...' },
+    { src: '/moscot/second/4.png', name: 'Поющий', status: 'Ла-ла-ла! Музыка вдохновляет!' },
+    { src: '/moscot/second/5.png', name: 'Спящий', status: 'Zzz... Время для отдыха...' },
+    { src: '/moscot/second/6.png', name: 'Подмигивающий', status: 'Все будет хорошо! Я уверен!' },
+  ];
+
+  // Загружаем сохраненный выбор маскота из localStorage
+  const [mascotIndex, setMascotIndex] = useState(() => {
+    const saved = localStorage.getItem('mascotIndex');
+    return saved ? parseInt(saved, 10) : 0;
+  });
+
+  // Сохраняем выбор маскота в localStorage
+  const handleMascotChange = (index) => {
+    setMascotIndex(index);
+    localStorage.setItem('mascotIndex', index.toString());
+  };
 
   // Автоматическая прокрутка к новым сообщениям
   useEffect(() => {
@@ -259,14 +287,48 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
         {/* Центральная панель - Маскот */}
         <div className="center-panel">
           <div className="mascot-section">
-            <div className="mascot-container">
-              <img 
-                src="/images/mascot.png" 
-                alt="Учебный маскот"
-                className="mascot-image"
-              />
-              <div className="mascot-status">
-                <span className="status-text">Маскот готов помочь!</span>
+            <div className="mascot-wrapper">
+              <div className="mascot-container">
+                <img 
+                  src={mascots[mascotIndex].src} 
+                  alt={mascots[mascotIndex].name}
+                  className="mascot-image"
+                />
+                <div className="mascot-status">
+                  <span className="status-text">{mascots[mascotIndex].status}</span>
+                </div>
+              </div>
+            </div>
+            <div className="mascot-controls">
+              <div className="mascot-selector">
+                <label className="mascot-select-label">Выберите маскота:</label>
+                <select 
+                  className="mascot-select"
+                  value={mascotIndex}
+                  onChange={(e) => handleMascotChange(Number(e.target.value))}
+                >
+                  {mascots.map((mascot, index) => (
+                    <option key={index} value={index}>
+                      {index + 1}. {mascot.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mascot-buttons">
+                {mascots.map((mascot, index) => (
+                  <button
+                    key={index}
+                    className={`mascot-button ${mascotIndex === index ? 'active' : ''}`}
+                    onClick={() => handleMascotChange(index)}
+                    title={mascot.name}
+                  >
+                    <img 
+                      src={mascot.src} 
+                      alt={mascot.name}
+                      className="mascot-button-image"
+                    />
+                  </button>
+                ))}
               </div>
             </div>
             <div className="mascot-description">
