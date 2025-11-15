@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import './MainWindow.css';
 
 const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
@@ -188,7 +190,47 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
                     {message.type === 'user' ? '👤' : '🤖'}
                   </div>
                   <div className="message-content">
-                    <div className="message-text">{message.text}</div>
+                    <div className="message-text">
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          p: ({ node, ...props }) => <p style={{ margin: 0 }} {...props} />,
+                          a: ({ node, ...props }) => (
+                            <a
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ color: '#667eea', textDecoration: 'underline' }}
+                              {...props}
+                            />
+                          ),
+                          code: ({ node, inline, ...props }) => (
+                            <code
+                              style={{
+                                background: 'rgba(0, 0, 0, 0.05)',
+                                padding: inline ? '2px 4px' : '8px',
+                                borderRadius: '4px',
+                                fontSize: '0.9em',
+                                fontFamily: 'monospace',
+                                display: inline ? 'inline' : 'block',
+                                margin: inline ? 0 : '4px 0',
+                              }}
+                              {...props}
+                            />
+                          ),
+                          ul: ({ node, ...props }) => (
+                            <ul style={{ margin: '4px 0', paddingLeft: '20px' }} {...props} />
+                          ),
+                          ol: ({ node, ...props }) => (
+                            <ol style={{ margin: '4px 0', paddingLeft: '20px' }} {...props} />
+                          ),
+                          li: ({ node, ...props }) => (
+                            <li style={{ margin: '2px 0' }} {...props} />
+                          ),
+                        }}
+                      >
+                        {message.text}
+                      </ReactMarkdown>
+                    </div>
                     <div className="message-time">
                       {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
