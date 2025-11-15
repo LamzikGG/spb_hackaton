@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import './MainWindow.css';
 
 const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
+  const [isChatFullscreen, setIsChatFullscreen] = useState(false);
   const navigate = useNavigate();
   // Get username from prop, localStorage, or default
   const userName = propUserName || localStorage.getItem('username') || 'Пользователь';
@@ -91,8 +92,6 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
   const quickActions = [
     { label: 'Учебные игры', action: handleStartGame },
     { label: 'База знаний', action: () => navigate('/articles') },
-    { label: 'Статистика', action: () => console.log('Open statistics') },
-    { label: 'Настройки', action: () => console.log('Open settings') }
   ];
 
   return (
@@ -105,6 +104,109 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
         </button>
       </header>
 
+          {isChatFullscreen ? (
+      /* === ПОЛНОЭКРАННЫЙ ЧАТ === */
+      <div className="chat-fullscreen-container">
+        <div className="chat-fullscreen-header">
+          <button
+            className="back-btn action-btn"
+            onClick={() => setIsChatFullscreen(false)}
+          >
+            ← Назад к меню
+          </button>
+          <div className="chat-status online">Online</div>
+        </div>
+
+        <div className="chat-fullscreen-messages">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`message ${message.type === 'user' ? 'user-message' : 'bot-message'}`}
+            >
+              <div className="message-avatar">
+                {message.type === 'user' ? '👤' : '🤖'}
+              </div>
+              <div className="message-content">
+                <div className="message-text">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      p: ({ node, ...props }) => <p style={{ margin: 0 }} {...props} />,
+                      a: ({ node, ...props }) => (
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: '#667eea', textDecoration: 'underline' }}
+                          {...props}
+                        />
+                      ),
+                      code: ({ node, inline, ...props }) => (
+                        <code
+                          style={{
+                            background: 'rgba(0, 0, 0, 0.05)',
+                            padding: inline ? '2px 4px' : '8px',
+                            borderRadius: '4px',
+                            fontSize: '0.9em',
+                            fontFamily: 'monospace',
+                            display: inline ? 'inline' : 'block',
+                            margin: inline ? 0 : '4px 0',
+                          }}
+                          {...props}
+                        />
+                      ),
+                      ul: ({ node, ...props }) => (
+                        <ul style={{ margin: '4px 0', paddingLeft: '20px' }} {...props} />
+                      ),
+                      ol: ({ node, ...props }) => (
+                        <ol style={{ margin: '4px 0', paddingLeft: '20px' }} {...props} />
+                      ),
+                      li: ({ node, ...props }) => (
+                        <li style={{ margin: '2px 0' }} {...props} />
+                      ),
+                    }}
+                  >
+                    {message.text}
+                  </ReactMarkdown>
+                </div>
+                <div className="message-time">
+                  {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
+              </div>
+            </div>
+          ))}
+          {isLoading && (
+            <div className="message bot-message">
+              <div className="message-avatar">🤖</div>
+              <div className="message-content">
+                <div className="message-text typing-indicator">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <form className="chat-fullscreen-input-form" onSubmit={handleSendMessage}>
+          <div className="input-container">
+            <input
+              type="text"
+              value={chatMessage}
+              onChange={(e) => setChatMessage(e.target.value)}
+              placeholder={isLoading ? "Нейросеть думает..." : "Задайте вопрос..."}
+              className="message-input"
+              disabled={isLoading}
+            />
+            <button type="submit" className="send-button" disabled={isLoading}>
+              {isLoading ? '⏳' : '📤'}
+            </button>
+          </div>
+        </form>
+      </div>
+    ) : (
+      /* === ОБЫЧНЫЙ РЕЖИМ (ТРИ ПАНЕЛИ) === */
       <div className="main-menu-content">
         {/* Левая панель - Кнопки и информация */}
         <div className="left-panel">
@@ -177,7 +279,16 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
           <div className="chat-section">
             <div className="chat-header">
               <h3>Чат с нейросетью</h3>
-              <div className="chat-status online">Online</div>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <div className="chat-status online">Online</div>
+                <button
+                  className="fullscreen-toggle-btn"
+                  onClick={() => setIsChatFullscreen(true)}
+                  title="Развернуть чат"
+                >
+                  ⤢
+                </button>
+              </div>
             </div>
             
             <div className="chat-messages">
@@ -301,6 +412,7 @@ const MainWindow = ({ onLogout, onStartGame, userName: propUserName }) => {
           </div>
         </div>
       </div>
+    )}
     </div>
   );
 };
