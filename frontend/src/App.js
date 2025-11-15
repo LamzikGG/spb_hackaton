@@ -17,7 +17,11 @@ function App() {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
-        minHeight: '100vh'
+        minHeight: '100vh',
+        minHeight: '-webkit-fill-available',
+        width: '100%',
+        overflowX: 'hidden',
+        position: 'relative'
       }}
     >
       <Routes>

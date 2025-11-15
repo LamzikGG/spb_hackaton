@@ -18,10 +18,14 @@
 
 .App {
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
 }
 
 /* Container for Login and Register pages */
